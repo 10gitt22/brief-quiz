@@ -1,0 +1,16 @@
+.Button {
+  background-color: var(--app-black);
+  color: var(--app-white);
+  height: var(--button-height);
+  border-radius: var(--border-radius);
+  transition: background-color .3s ease;
+  padding: 0 20px;
+}
+
+.Button:hover {
+  background-color: var(--app-black-darken);
+}
+
+.Button:disabled {
+  background-color: var(--app-disabled);
+}

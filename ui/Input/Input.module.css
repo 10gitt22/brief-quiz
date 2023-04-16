@@ -1,0 +1,50 @@
+.Input {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputField {
+  height: 50px;
+  padding: 0 15px;
+  color: solid 1px var(--app-black);
+  background: transparent;
+  border: solid 1px var(--app-black);
+  /* border-right-width: 5px; */
+  border-left-width: 5px;
+  border-radius: var(--border-radius);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.inputLabel {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  z-index: 2;
+  padding: 0 10px;
+  color: var(--app-black);
+  background: var(--app-white);
+  transform: translateY(-50%);
+  cursor: text;
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+.inputField:-webkit-autofill,
+.inputField:-webkit-autofill:active {
+  border-color: var(--app-black);
+  box-shadow: 0 0 0 50px var(--app-white) inset;
+  -webkit-text-fill-color: var(--app-black);
+}
+
+.inputField:focus + .inputLabel,
+.inputField:not(:placeholder-shown) + .inputLabel {
+  top: 0;
+  font-size: 12px;
+}
+
+.inputField:focus {
+  outline: none;
+}
+

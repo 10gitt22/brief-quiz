@@ -7,6 +7,7 @@ import { signOut } from 'firebase/services/auth';
 import { useAuth } from 'contexts/auth';
 import Button from 'ui/Button/Button';
 import UserAvatar from 'ui/UserAvatar/UserAvatar';
+import Link from 'next/link';
 
 function Header() {
   const [loading, setLoading] = useState(false);
@@ -24,7 +25,9 @@ function Header() {
 
   return (
     <header className="absolute w-full flex h-header justify-between items-center px-5">
-      <div className="text-2xl font-bold">brief-quiz</div>
+      <Link href={'/'}>
+        <div className="text-2xl font-bold">brief-quiz</div>
+      </Link>
       {firestoreUser && !loading ? (
         <div className="flex items-center gap-3">
           <UserAvatar email={firestoreUser.name!} />

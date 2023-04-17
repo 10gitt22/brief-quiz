@@ -27,17 +27,28 @@ const Dashboard = () => {
     return <TailSpin height="80" width="80" color="#222" />;
   }
 
-  return userQuizes.length <= 0 ? (
-    <Link className="text-2xl font-bold underline" href={'/quiz'}>
-      розпочати опитування
-    </Link>
-  ) : (
-    <div>
-      {userQuizes.map((quiz) => {
-        return quiz.name;
-      })}
+  return (
+    <div className="flex w-full h-full flex-col gap-4 items-center">
+      {userQuizes.length <= 0 ? (
+        <div className="h-full flex items-center">
+          <Link className="text-2xl font-bold underline" href={'/quiz'}>
+            пройти опитування
+          </Link>
+        </div>
+      ) : (
+        <div className="w-full h-full flex gap-5">
+          {userQuizes.map((quiz) => {
+            return (
+              <Link key={quiz.name} className="h-fit" href={'/quiz'}>
+                <div className="bg-app-black text-app-white p-5 w-[300px] h-[300px] rounded-[10px] shadow-xl text-3xl flex items-end">
+                  {quiz.name}
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
-
 export default memo(Dashboard);

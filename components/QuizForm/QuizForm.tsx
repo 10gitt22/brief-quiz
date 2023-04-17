@@ -15,7 +15,6 @@ const quiz = {
       blockTitle: 'Про вашу компанію',
       blockId: 1,
       question: 'Назва компанії',
-      name: 'question1_1',
       answer: '',
     },
     {
@@ -23,23 +22,102 @@ const quiz = {
       blockTitle: 'Про вашу компанію',
       blockId: 1,
       question: 'Галузь діяльності',
-      name: 'question1_2',
       answer: '',
     },
     {
       id: 3,
-      blockTitle: 'Вимоги до сайту',
-      blockId: 2,
-      question: 'Дизайн та кольорова палітра',
-      name: 'question2_1',
+      blockTitle: 'Про вашу компанію',
+      blockId: 1,
+      question: 'Короткий опис компанії',
       answer: '',
     },
     {
       id: 4,
+      blockTitle: 'Про вашу компанію',
+      blockId: 1,
+      question: 'Цілі та завдання розробки сайту',
+      answer: '',
+    },
+
+    // 2
+
+    {
+      id: 5,
+      blockTitle: 'Вимоги до сайту',
+      blockId: 2,
+      question: 'Дизайн та кольорова палітра',
+      answer: '',
+    },
+    {
+      id: 6,
+      blockTitle: 'Вимоги до сайту',
+      blockId: 2,
+      question: 'Функціональність сайту',
+      answer: '',
+    },
+    {
+      id: 7,
+      blockTitle: 'Вимоги до сайту',
+      blockId: 2,
+      question: ' Вимоги до контенту та його структури',
+      answer: '',
+    },
+    {
+      id: 8,
+      blockTitle: 'Вимоги до сайту',
+      blockId: 2,
+      question:
+        'Особливі функції (наприклад, онлайн-магазин, блог, форум тощо)',
+      answer: '',
+    },
+
+    // 3
+    {
+      id: 9,
       blockTitle: 'Цільова аудиторія',
       blockId: 3,
-      question: 'Яка аудиторія',
-      name: 'questioт3_1',
+      question: 'Хто є вашою цільовою аудиторією?',
+      answer: '',
+    },
+    {
+      id: 10,
+      blockTitle: 'Цільова аудиторія',
+      blockId: 3,
+      question: 'Які її потреби та очікування?',
+      answer: '',
+    },
+
+    // 4
+
+    {
+      id: 11,
+      blockTitle: 'Конкуренти',
+      blockId: 4,
+      question: 'Хто є вашими основними конкурентами в онлайн-просторі?',
+      answer: '',
+    },
+    {
+      id: 12,
+      blockTitle: 'Конкуренти',
+      blockId: 4,
+      question: 'Як ви хочете відрізнитися від конкурентів?',
+      answer: '',
+    },
+
+    // 5
+
+    {
+      id: 11,
+      blockTitle: 'Функціональні вимоги',
+      blockId: 5,
+      question: 'Які функції має мати сайт?',
+      answer: '',
+    },
+    {
+      id: 12,
+      blockTitle: 'Функціональні вимоги',
+      blockId: 5,
+      question: 'Які можуть бути додаткові функції?',
       answer: '',
     },
   ],

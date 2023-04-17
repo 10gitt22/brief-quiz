@@ -18,3 +18,13 @@
   --input-height: 50px;
   --button-height: 50px;
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+  background-color: #eee;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #222;
+
+}

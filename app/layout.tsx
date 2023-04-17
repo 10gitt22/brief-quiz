@@ -4,6 +4,8 @@ import { AuthProvider } from 'contexts/auth';
 import Header from 'components/Header/Header';
 import './globals.css';
 import { Toaster } from 'react-hot-toast';
+import { Suspense } from 'react';
+import Loading from './loading';
 
 const Helvetica = localFont({
   src: [
@@ -30,7 +32,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           <Header />
-          {children}
+          <Suspense fallback={<Loading />}>{children}</Suspense>
         </AuthProvider>
         <Toaster position="bottom-right" />
       </body>

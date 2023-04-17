@@ -1,28 +1,42 @@
 'use client';
 
-import { useAuth } from 'contexts/auth';
-import { userAPI } from 'firebase/services/firestore';
-import Link from 'next/link';
 import { memo, useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useAuth } from 'contexts/auth';
+import { TailSpin } from 'react-loader-spinner';
+
+import { Quiz } from 'firebase/entities/quiz';
+import { userAPI } from 'firebase/services/firestore';
 
 const Dashboard = () => {
-  const [userQuizes, setUserQuizes] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [userQuizes, setUserQuizes] = useState<Quiz[]>([]);
   const { firestoreUser } = useAuth();
 
   useEffect(() => {
     if (firestoreUser) {
+      setLoading(true);
       userAPI.getUserQuizes(firestoreUser.id).then((data) => {
         setUserQuizes(data);
+        setLoading(false);
       });
     }
   }, [firestoreUser]);
+
+  if (loading) {
+    return <TailSpin height="80" width="80" color="#222" />;
+  }
 
   return userQuizes.length <= 0 ? (
     <Link className="text-2xl font-bold underline" href={'/quiz'}>
       розпочати опитування
     </Link>
   ) : (
-    <div></div>
+    <div>
+      {userQuizes.map((quiz) => {
+        return quiz.name;
+      })}
+    </div>
   );
 };
 

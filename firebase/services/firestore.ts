@@ -23,7 +23,7 @@ export const userAPI = {
 
     const quizesSnap = await getDocs(quizesCollection)
     const quizes = quizesSnap.docs.map(quiz => {
-      return quiz.data()
+      return quiz.data() as Quiz
     })
     
     return quizes

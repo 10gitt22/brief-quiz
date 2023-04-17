@@ -3,19 +3,23 @@
 import { FC, Fragment, memo, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import toast from 'react-hot-toast';
+import { TailSpin } from 'react-loader-spinner';
 
 import { Quiz } from 'firebase/entities/quiz';
 import { quizAPI, userAPI } from 'firebase/services/firestore';
 import { useAuth } from 'contexts/auth';
+import { useRouter } from 'next/navigation';
 
 const QuizForm: FC<{ quiz: Quiz }> = ({ quiz }) => {
   const { user } = useAuth();
+  const { push } = useRouter();
   const { values, handleChange, handleSubmit } = useFormik({
     initialValues: quiz,
     onSubmit: async (values) => {
       const data = await userAPI.saveAnswers(user!.uid, values);
       if (data.result) {
         toast.success('Ваші відповіді збережено!');
+        push('/');
       }
       if (data.error) {
         toast.error(data.error);
@@ -66,13 +70,23 @@ const QuizForm: FC<{ quiz: Quiz }> = ({ quiz }) => {
 };
 
 const QuizComponent = () => {
+  const [loading, setLoading] = useState(true);
   const [quiz, setQuiz] = useState<Quiz | null>(null);
 
   useEffect(() => {
     quizAPI.getQuiz().then((data) => {
       if (data) setQuiz(data);
+      setLoading(false);
     });
   }, []);
+
+  if (loading) {
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        <TailSpin height="80" width="80" color="#222" />
+      </div>
+    );
+  }
 
   return quiz ? (
     <div className="w-full max-w-[1200px] md:w-[80%]">

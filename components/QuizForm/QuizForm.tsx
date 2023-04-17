@@ -65,8 +65,8 @@ const QuizComponent = () => {
   }, []);
 
   return quiz ? (
-    <div className="w-2/3">
-      <h2 className="text-7xl font-bold">{quiz.name}</h2>
+    <div className="w-full max-w-[1200px] md:w-[80%]">
+      <h1 className="text-5xl md:text-7xl font-bold">{quiz.name}</h1>
       <QuizForm quiz={quiz} />
     </div>
   ) : (

@@ -37,7 +37,7 @@ export default function LoginForm() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
-        className="w-full py-5 max-w-[500px] flex flex-col gap-7"
+        className="w-full py-5 max-w-[600px] flex flex-col gap-7"
         onSubmit={handleSubmit}
       >
         <Input

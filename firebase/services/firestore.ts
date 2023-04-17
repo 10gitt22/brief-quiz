@@ -1,6 +1,7 @@
 import { FirestoreUser } from '../entities/user';
 import firebaseApp from '../config';
 import { DocumentReference, collection, doc, getDoc, getDocs, getFirestore, setDoc } from 'firebase/firestore';
+import { Quiz } from 'firebase/entities/quiz';
 
 const db = getFirestore(firebaseApp);
 
@@ -30,8 +31,8 @@ export const userAPI = {
 
 export const quizAPI = {
   async getQuiz() {
-    const docRef = doc(db, 'quizes', '7C02UxWR6mUjMYQ9OyDz')
-    const quiz = await getDoc(docRef)
+    const docRef = doc(db, 'quizes', 'TwkmZZTxJedotBVapB6j')
+    const quiz = await getDoc<Quiz>(docRef as DocumentReference<Quiz>)
     return quiz.data()
   }
 }

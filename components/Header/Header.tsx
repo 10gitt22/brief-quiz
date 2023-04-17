@@ -22,22 +22,24 @@ function Header() {
     setLoading(false);
   };
 
-  return firestoreUser && !loading ? (
+  return (
     <header className="absolute w-full flex h-header justify-between items-center px-5">
       <div className="text-2xl font-bold">brief-quiz</div>
-      <div className="flex items-center gap-3">
-        <UserAvatar email={firestoreUser.name!} />
-        <Button
-          className="h-[40px!important]"
-          disabled={loading}
-          onClick={logout}
-        >
-          Вийти
-        </Button>
-      </div>
+      {firestoreUser && !loading ? (
+        <div className="flex items-center gap-3">
+          <UserAvatar email={firestoreUser.name!} />
+          <Button
+            className="h-[40px!important]"
+            disabled={loading}
+            onClick={logout}
+          >
+            Вийти
+          </Button>
+        </div>
+      ) : (
+        <div></div>
+      )}
     </header>
-  ) : (
-    <></>
   );
 }
 

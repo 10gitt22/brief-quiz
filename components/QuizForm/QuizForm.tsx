@@ -3,7 +3,7 @@
 import { FC, Fragment, memo, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import toast from 'react-hot-toast';
-import { TailSpin } from 'react-loader-spinner';
+import { TailSpin, ThreeDots } from 'react-loader-spinner';
 
 import { Quiz } from 'firebase/entities/quiz';
 import { quizAPI, userAPI } from 'firebase/services/firestore';
@@ -13,9 +13,12 @@ import { useRouter } from 'next/navigation';
 const QuizForm: FC<{ quiz: Quiz }> = ({ quiz }) => {
   const { user } = useAuth();
   const { push } = useRouter();
+  const [saving, setSaving] = useState(false);
+
   const { values, handleChange, handleSubmit } = useFormik({
     initialValues: quiz,
     onSubmit: async (values) => {
+      setSaving(true);
       const data = await userAPI.saveAnswers(user!.uid, values);
       if (data.result) {
         toast.success('Ваші відповіді збережено!');
@@ -24,6 +27,7 @@ const QuizForm: FC<{ quiz: Quiz }> = ({ quiz }) => {
       if (data.error) {
         toast.error(data.error);
       }
+      setSaving(false);
     },
   });
   const hash = new Map<number, string>();
@@ -58,10 +62,14 @@ const QuizForm: FC<{ quiz: Quiz }> = ({ quiz }) => {
 
         <div className="mt-10  py-5">
           <button
-            className="w-[200px] h-[50px] text-app-white rounded-[10px] bg-app-black"
+            className="flex items-center justify-center w-[200px] h-[50px] text-app-white rounded-[10px] bg-app-black"
             type="submit"
           >
-            Save
+            {saving ? (
+              <ThreeDots width={20} height={20} color="#fff" />
+            ) : (
+              'Зберегти'
+            )}
           </button>
         </div>
       </form>

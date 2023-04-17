@@ -14,6 +14,24 @@ export const userAPI = {
     await setDoc(doc(db, 'users', userData.id), {
       ...userData
     })
+  },
+  async getUserQuizes(userId: string) {
+    const userRef = doc(db, 'users', userId)
+    const quizesCollection = collection(userRef, 'quizes')
+
+    const quizesSnap = await getDocs(quizesCollection)
+    const quizes = quizesSnap.docs.map(quiz => {
+      return quiz.data()
+    })
+    
+    return quizes
   }
 }
 
+export const quizAPI = {
+  async getQuiz() {
+    const docRef = doc(db, 'quizes', '7C02UxWR6mUjMYQ9OyDz')
+    const quiz = await getDoc<Quiz>(docRef  as DocumentReference<Quiz>)
+    return quiz.data()
+  }
+}

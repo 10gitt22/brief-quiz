@@ -35,8 +35,10 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
+        push('/');
       } else {
         setUser(null);
+        push('/login');
       }
     });
 
@@ -48,20 +50,12 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
       if (user) {
         const result = await userAPI.getUser(user.uid);
         if (result) setFirestoreUser(result);
-        push('/');
-        push;
       } else {
         setFirestoreUser(null);
-        push('/login');
       }
     };
-    console.log(user, 'user');
     handleUser();
   }, [user]);
-
-  useEffect(() => {
-    console.log(firestoreUser, 'firestore user');
-  }, [firestoreUser]);
 
   const value = useMemo(() => {
     return {

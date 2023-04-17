@@ -9,7 +9,7 @@ export function PageWrapper({ children }: { children: ReactNode }) {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 20 }}
-        className={'min-h-scren'}
+        className={'h-full'}
       >
         {children}
       </motion.div>

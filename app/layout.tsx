@@ -25,9 +25,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${Helvetica.className} bg-app-white h-screen overflow-hidden`}
+        className={`${Helvetica.className} bg-app-white h-screen overflow-y-scroll`}
       >
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <Header />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

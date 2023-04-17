@@ -31,7 +31,7 @@ export const userAPI = {
 export const quizAPI = {
   async getQuiz() {
     const docRef = doc(db, 'quizes', '7C02UxWR6mUjMYQ9OyDz')
-    const quiz = await getDoc<Quiz>(docRef  as DocumentReference<Quiz>)
+    const quiz = await getDoc(docRef)
     return quiz.data()
   }
 }

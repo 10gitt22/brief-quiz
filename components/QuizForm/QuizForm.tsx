@@ -107,14 +107,14 @@ const quiz = {
     // 5
 
     {
-      id: 11,
+      id: 13,
       blockTitle: 'Функціональні вимоги',
       blockId: 5,
       question: 'Які функції має мати сайт?',
       answer: '',
     },
     {
-      id: 12,
+      id: 14,
       blockTitle: 'Функціональні вимоги',
       blockId: 5,
       question: 'Які можуть бути додаткові функції?',
@@ -124,14 +124,14 @@ const quiz = {
     // 6
 
     {
-      id: 13,
+      id: 15,
       blockTitle: 'Технічні вимоги',
       blockId: 6,
       question: 'Які технічні вимоги має мати сайт?',
       answer: '',
     },
     {
-      id: 14,
+      id: 16,
       blockTitle: 'Технічні вимоги',
       blockId: 6,
       question: 'Яка платформа для розробки має бути використана?',
@@ -141,14 +141,14 @@ const quiz = {
     // 7
 
     {
-      id: 15,
+      id: 17,
       blockTitle: 'Вимоги до контенту',
       blockId: 7,
       question: 'Який контент вам потрібен для сайту?',
       answer: '',
     },
     {
-      id: 16,
+      id: 18,
       blockTitle: 'Вимоги до контенту',
       blockId: 7,
       question:
@@ -159,14 +159,14 @@ const quiz = {
     // 8
 
     {
-      id: 17,
+      id: 19,
       blockTitle: 'Терміни',
       blockId: 8,
       question: 'Які терміни розробки ви хочете встановити?',
       answer: '',
     },
     {
-      id: 18,
+      id: 20,
       blockTitle: 'Терміни',
       blockId: 8,
       question: 'Чи є у вас термінові дедлайни?',

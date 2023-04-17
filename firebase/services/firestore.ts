@@ -1,7 +1,8 @@
 import { FirestoreUser } from '../entities/user';
 import firebaseApp from '../config';
-import { DocumentReference, collection, doc, getDoc, getDocs, getFirestore, setDoc } from 'firebase/firestore';
+import { DocumentReference, addDoc, collection, doc, getDoc, getDocs, getFirestore, setDoc } from 'firebase/firestore';
 import { Quiz } from 'firebase/entities/quiz';
+import { FirebaseError } from 'firebase/app';
 
 const db = getFirestore(firebaseApp);
 
@@ -26,6 +27,23 @@ export const userAPI = {
     })
     
     return quizes
+  },
+  async saveAnswers(userId: string, data: Quiz) {
+    const userRef = doc(db, 'users', userId)
+    const userQuizesCollectionRef = collection(userRef, 'quizes')
+    let error = null
+
+    try {
+      const result = await addDoc(userQuizesCollectionRef, data)
+      return {result, error}
+    } catch (e) {
+      if (e instanceof FirebaseError) {
+        error = e.message
+      } else {
+        error = 'Unexpected error'
+      }
+      return {result: null, error}
+    }
   }
 }
 

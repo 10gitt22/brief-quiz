@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import { AuthProvider } from 'contexts/auth';
 import Header from 'components/Header/Header';
 import './globals.css';
+import { Toaster } from 'react-hot-toast';
 
 const Helvetica = localFont({
   src: [
@@ -31,6 +32,7 @@ export default function RootLayout({
           <Header />
           {children}
         </AuthProvider>
+        <Toaster position="bottom-right" />
       </body>
     </html>
   );

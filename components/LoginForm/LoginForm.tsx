@@ -4,11 +4,12 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
+import { AnimatePresence, motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 import Button from 'ui/Button/Button';
 import Input from 'ui/Input/Input';
 import { logIn } from 'firebase/services/auth';
-import { AnimatePresence, motion } from 'framer-motion';
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
@@ -21,11 +22,12 @@ export default function LoginForm() {
     },
     onSubmit: async (data) => {
       setLoading(true);
-      try {
-        await logIn(data.email, data.password);
+      const response = await logIn(data.email, data.password);
+      if (response.result) {
         push('/');
-      } catch (error) {
-        console.log(error);
+      }
+      if (response.error) {
+        toast.error(response.error);
       }
       setLoading(false);
     },

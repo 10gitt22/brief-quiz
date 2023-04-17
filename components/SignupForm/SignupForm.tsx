@@ -3,12 +3,13 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { signUp } from 'firebase/services/auth';
 import { useFormik } from 'formik';
+import { AnimatePresence, motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 
+import { signUp } from 'firebase/services/auth';
 import Button from 'ui/Button/Button';
 import Input from 'ui/Input/Input';
-import { AnimatePresence, motion } from 'framer-motion';
 
 export default function SignupForm() {
   const [loading, setLoading] = useState(false);
@@ -28,11 +29,12 @@ export default function SignupForm() {
         email: data.email,
         password: data.password,
       };
-      try {
-        await signUp(signupData);
+      const response = await signUp(signupData);
+      if (response.result) {
         push('/');
-      } catch (error) {
-        console.log(error);
+      }
+      if (response.error) {
+        toast.error(response.error);
       }
       setLoading(false);
     },
@@ -53,6 +55,7 @@ export default function SignupForm() {
           value={values.name}
           onChangeFormik={handleChange}
           label="Як вас звати?"
+          required
         />
         <Input
           id="email"
@@ -60,6 +63,7 @@ export default function SignupForm() {
           value={values.email}
           onChangeFormik={handleChange}
           label="Введіть пошту"
+          required
         />
         <Input
           id="password"
@@ -68,6 +72,7 @@ export default function SignupForm() {
           onChangeFormik={handleChange}
           type="password"
           label="Пароль"
+          required
         />
         <Input
           id="confirm_password"
@@ -76,6 +81,7 @@ export default function SignupForm() {
           onChangeFormik={handleChange}
           type="password"
           label="Підтвердіть пароль"
+          required
         />
         <Button disabled={loading} className="font-bold">
           Зареєструватись

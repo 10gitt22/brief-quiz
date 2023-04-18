@@ -9,6 +9,7 @@ import { ThreeDots } from 'react-loader-spinner';
 import { Answer, Quiz } from 'firebase/entities/quiz';
 import { userAPI } from 'firebase/services/firestore';
 import { useAuth } from 'contexts/auth';
+import { Timestamp } from 'firebase/firestore';
 
 type QuizFormProps = {
   quiz: Quiz | Answer;
@@ -17,7 +18,7 @@ type QuizFormProps = {
 };
 
 const QuizForm: FC<QuizFormProps> = ({ quiz, isEdit, editId }) => {
-  const { user } = useAuth();
+  const { firestoreUser } = useAuth();
   const { push } = useRouter();
   const [saving, setSaving] = useState(false);
 
@@ -30,9 +31,17 @@ const QuizForm: FC<QuizFormProps> = ({ quiz, isEdit, editId }) => {
       let data = null;
 
       if (isEdit) {
-        data = await userAPI.editAnswersById(user!.uid, editId!, values);
+        data = await userAPI.editAnswersById(editId!, {
+          ...values,
+          answeredAt: Timestamp.now(),
+        });
       } else {
-        data = await userAPI.saveAnswers(user!.uid, values);
+        data = await userAPI.saveAnswers({
+          ...values,
+          userName: firestoreUser!.name,
+          userId: firestoreUser!.id,
+          answeredAt: Timestamp.now(),
+        });
       }
 
       if (data.result) {

@@ -25,7 +25,7 @@ export default function AnswerPage() {
   useEffect(() => {
     if (firestoreUser) {
       setLoading(true);
-      userAPI.getUserAnswersById(firestoreUser.id, answerId).then((data) => {
+      userAPI.getUserAnswersById(answerId).then((data) => {
         if (data.result) {
           setUserAnswers(data.result);
         }

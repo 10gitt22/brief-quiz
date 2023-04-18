@@ -1,46 +1,53 @@
 import { FirestoreUser } from '../entities/user';
 import firebaseApp from '../config';
-import { DocumentReference, addDoc, collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
-import { Answer, Quiz } from 'firebase/entities/quiz';
+import { CollectionReference, DocumentData, DocumentReference, addDoc, collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { Answer, AnswerToUpdate, Quiz } from 'firebase/entities/quiz';
 import { FirebaseError } from 'firebase/app';
 
 const db = getFirestore(firebaseApp);
 
+const createCollection = <T = DocumentData>(collectionName: string) => {
+  return collection(db, collectionName) as CollectionReference<T>
+}
+
+const usersCollection = createCollection<FirestoreUser>('users') 
+const quizesCollection = createCollection<Quiz>('quizes')
+const answersCollection = createCollection<Answer>('answers')
+
+
+
+
 export const userAPI = {
   async getUser(id: string) {
-    const docRef = doc(db, "users", id)
-    const user = await getDoc<FirestoreUser>(docRef as DocumentReference<FirestoreUser>);
+    const docRef = doc(usersCollection, id)
+    const user = await getDoc(docRef);
     return user.data();
   },
   async addUser(userData: FirestoreUser) {
-    await setDoc(doc(db, 'users', userData.id), {
+    await setDoc(doc(usersCollection, userData.id), {
       ...userData
     })
   },
   async getUserAnswers(userId: string) {
-    const userRef = doc(db, 'users', userId)
-    const answersCollection = collection(userRef, 'answers')
+    const q = query(answersCollection, where('userId', '==', userId))
 
-    const answersSnap = await getDocs(answersCollection)
+    const answersSnap = await getDocs(q)
     const answers = answersSnap.docs.map(answer => {
-      return answer.data() as Answer
+      return answer.data()
     })
     
     return answers
   },
-  async saveAnswers(userId: string, data: Answer) {
-    const userRef = doc(db, 'users', userId)
-    const userAnswersCollectionRef = collection(userRef, 'answers')
+
+  async saveAnswers(data: Answer) {
     let error = null
-
     try {
-      const result = await addDoc(userAnswersCollectionRef, data)
-
-      await updateDoc(result, {
-        id: result.id
+      const createdAnswerRef = await addDoc(answersCollection, data)
+      await updateDoc(createdAnswerRef, {
+        id: createdAnswerRef.id
       })
-
-      return {result, error}
+  
+      return {result: createdAnswerRef.id, error}
     } catch (e) {
       if (e instanceof FirebaseError) {
         error = e.message
@@ -50,15 +57,17 @@ export const userAPI = {
       return {result: null, error}
     }
   },
-  async getUserAnswersById(userId: string, answersId: string) {
-    const answersDocRef = doc(db, 'users', userId, 'answers', answersId)
+
+  async getUserAnswersById(answersId: string) {
+    const answerDocRef = doc(answersCollection,answersId)
+    
     let error = null
     let result = null
 
     try {
-      const docSnap = await getDoc(answersDocRef)
+      const docSnap = await getDoc(answerDocRef)
       if(docSnap.exists()) {
-        result = docSnap.data() as Answer
+        result = docSnap.data()
       } else {
         error = "Ваші відповіді не знайдено:("
       }
@@ -74,14 +83,15 @@ export const userAPI = {
     }
 
   },
-  async editAnswersById(userId: string, answersId: string, data: Answer) {
-    const answersDocRef = doc(db, 'users', userId, 'answers', answersId)
+  async editAnswersById(answersId: string, data: AnswerToUpdate) {
+    const answerDocRef = doc(answersCollection, answersId)
+
     let error = null
     
     try {
-      const docSnap = await getDoc(answersDocRef)
-      if (docSnap.exists()) await updateDoc(answersDocRef, data)
-      return {result: 'OK', error: null}
+      const docSnap = await getDoc(answerDocRef)
+      if (docSnap.exists()) await updateDoc(answerDocRef, data)
+      return {result: "OK", error: null}
     } catch (e) {
       if (e instanceof FirebaseError) {
         error = e.message
@@ -95,8 +105,8 @@ export const userAPI = {
 
 export const quizAPI = {
   async getQuiz() {
-    const docRef = doc(db, 'quizes', 'TwkmZZTxJedotBVapB6j')
-    const quiz = await getDoc<Quiz>(docRef as DocumentReference<Quiz>)
+    const docRef = doc(quizesCollection, 'TwkmZZTxJedotBVapB6j')
+    const quiz = await getDoc(docRef)
     return quiz.data()
   }
 }

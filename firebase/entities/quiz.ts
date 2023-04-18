@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore"
+
 export type Quiz = {
   readonly id: string
   name: string
@@ -8,7 +10,11 @@ export type Answer = {
   readonly id: string
   name: string
   questions: Question[]
+  userName: string
+  answeredAt: Timestamp
+  userId: string
 }
+export type AnswerToUpdate = Pick<Answer, "questions" | 'answeredAt'>
 
 export type Question = {
   readonly id: number

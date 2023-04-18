@@ -2,9 +2,9 @@
 
 import { Answer } from 'firebase/entities/quiz';
 import { FC, useCallback, useState } from 'react';
-import StaticAnswers from './StaticAnswers';
-import QuizForm from 'components/QuizForm/QuizForm';
 import { motion } from 'framer-motion';
+import QuizForm from 'components/QuizForm/QuizForm';
+import StaticAnswers from './StaticAnswers';
 
 type AnswersProps = {
   answers: Answer;

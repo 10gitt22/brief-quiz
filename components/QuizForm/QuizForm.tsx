@@ -78,6 +78,7 @@ const QuizForm: FC<QuizFormProps> = ({ quiz, isEdit, editId }) => {
         <button
           className="flex items-center justify-center w-[200px] h-[50px] text-app-white rounded-[10px] bg-app-black"
           type="submit"
+          disabled={saving}
         >
           {saving ? (
             <ThreeDots width={20} height={20} color="#fff" />

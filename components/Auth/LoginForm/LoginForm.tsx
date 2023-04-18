@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
@@ -10,10 +10,16 @@ import toast from 'react-hot-toast';
 import Button from 'ui/Button/Button';
 import Input from 'ui/Input/Input';
 import { logIn } from 'firebase/services/auth';
+import { useAuth } from 'contexts/auth';
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
   const { push } = useRouter();
+
+  useEffect(() => {
+    if (user) push('/');
+  }, [user]);
 
   const { values, handleChange, handleSubmit } = useFormik({
     initialValues: {

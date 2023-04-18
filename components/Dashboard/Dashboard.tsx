@@ -5,19 +5,21 @@ import Link from 'next/link';
 import { useAuth } from 'contexts/auth';
 import { TailSpin } from 'react-loader-spinner';
 
-import { Quiz } from 'firebase/entities/quiz';
+import { Answer } from 'firebase/entities/quiz';
 import { userAPI } from 'firebase/services/firestore';
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
-  const [userQuizes, setUserQuizes] = useState<Quiz[]>([]);
+  const [userAnswers, setUserAnswers] = useState<Answer[]>([]);
   const { firestoreUser } = useAuth();
 
   useEffect(() => {
     if (firestoreUser) {
       setLoading(true);
-      userAPI.getUserQuizes(firestoreUser.id).then((data) => {
-        setUserQuizes(data);
+      userAPI.getUserAnswers(firestoreUser.id).then((data) => {
+        setUserAnswers(data);
+        console.log(data, 'data');
+
         setLoading(false);
       });
     }
@@ -29,7 +31,7 @@ const Dashboard = () => {
 
   return (
     <div className="flex w-full h-full flex-col gap-4 items-center">
-      {userQuizes.length <= 0 ? (
+      {userAnswers.length <= 0 ? (
         <div className="h-full flex items-center">
           <Link className="text-2xl font-bold underline" href={'/quiz'}>
             пройти опитування
@@ -37,11 +39,15 @@ const Dashboard = () => {
         </div>
       ) : (
         <div className="w-full h-full flex gap-5">
-          {userQuizes.map((quiz) => {
+          {userAnswers.map((answer) => {
             return (
-              <Link key={quiz.name} className="h-fit" href={'/quiz'}>
+              <Link
+                key={answer.name}
+                className="h-fit"
+                href={`/answers/${answer.id}`}
+              >
                 <div className="bg-app-black text-app-white p-5 w-[300px] h-[300px] rounded-[10px] shadow-xl text-3xl flex items-end">
-                  {quiz.name}
+                  {answer.name}
                 </div>
               </Link>
             );

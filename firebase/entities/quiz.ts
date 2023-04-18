@@ -1,4 +1,11 @@
 export type Quiz = {
+  readonly id: string
+  name: string
+  questions: Question[]
+}
+
+export type Answer = {
+  readonly id: string
   name: string
   questions: Question[]
 }

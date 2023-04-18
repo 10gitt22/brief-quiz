@@ -1,7 +1,7 @@
 import { FirestoreUser } from '../entities/user';
 import firebaseApp from '../config';
-import { DocumentReference, addDoc, collection, doc, getDoc, getDocs, getFirestore, setDoc } from 'firebase/firestore';
-import { Quiz } from 'firebase/entities/quiz';
+import { DocumentReference, addDoc, collection, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
+import { Answer, Quiz } from 'firebase/entities/quiz';
 import { FirebaseError } from 'firebase/app';
 
 const db = getFirestore(firebaseApp);
@@ -17,24 +17,29 @@ export const userAPI = {
       ...userData
     })
   },
-  async getUserQuizes(userId: string) {
+  async getUserAnswers(userId: string) {
     const userRef = doc(db, 'users', userId)
-    const quizesCollection = collection(userRef, 'quizes')
+    const answersCollection = collection(userRef, 'answers')
 
-    const quizesSnap = await getDocs(quizesCollection)
-    const quizes = quizesSnap.docs.map(quiz => {
-      return quiz.data() as Quiz
+    const answersSnap = await getDocs(answersCollection)
+    const answers = answersSnap.docs.map(answer => {
+      return answer.data() as Answer
     })
     
-    return quizes
+    return answers
   },
-  async saveAnswers(userId: string, data: Quiz) {
+  async saveAnswers(userId: string, data: Answer) {
     const userRef = doc(db, 'users', userId)
-    const userQuizesCollectionRef = collection(userRef, 'quizes')
+    const userAnswersCollectionRef = collection(userRef, 'answers')
     let error = null
 
     try {
-      const result = await addDoc(userQuizesCollectionRef, data)
+      const result = await addDoc(userAnswersCollectionRef, data)
+
+      await updateDoc(result, {
+        id: result.id
+      })
+
       return {result, error}
     } catch (e) {
       if (e instanceof FirebaseError) {

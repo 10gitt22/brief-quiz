@@ -1,6 +1,7 @@
 'use client';
 
 import { FC, Fragment, memo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import toast from 'react-hot-toast';
 import { ThreeDots } from 'react-loader-spinner';
@@ -8,7 +9,6 @@ import { ThreeDots } from 'react-loader-spinner';
 import { Answer, Quiz } from 'firebase/entities/quiz';
 import { userAPI } from 'firebase/services/firestore';
 import { useAuth } from 'contexts/auth';
-import { useRouter } from 'next/navigation';
 
 type QuizFormProps = {
   quiz: Quiz | Answer;

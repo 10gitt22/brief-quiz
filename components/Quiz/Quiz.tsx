@@ -30,7 +30,7 @@ const QuizComponent = () => {
   return quiz ? (
     <div className="w-full max-w-[1200px] md:w-[80%]">
       <h1 className="text-5xl md:text-7xl font-bold">{quiz.name}</h1>
-      <QuizForm quiz={quiz} />
+      <QuizForm quiz={quiz} isEdit={false} />
     </div>
   ) : (
     <div>{'Опитування не знайдено:('}</div>

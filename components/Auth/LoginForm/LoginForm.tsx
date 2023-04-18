@@ -67,7 +67,7 @@ export default function LoginForm() {
           Увійти
         </Button>
         <span>
-          {'Досі нема аккаунту?'}{' '}
+          {'Досі нема акаунту?'}{' '}
           <Link href={'/signup'} className="text-app-primary underline ">
             Зареєструйтесь
           </Link>

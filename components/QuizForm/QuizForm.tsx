@@ -1,25 +1,40 @@
 'use client';
 
-import { FC, Fragment, memo, useEffect, useState } from 'react';
+import { FC, Fragment, memo, useState } from 'react';
 import { useFormik } from 'formik';
 import toast from 'react-hot-toast';
-import { TailSpin, ThreeDots } from 'react-loader-spinner';
+import { ThreeDots } from 'react-loader-spinner';
 
-import { Quiz } from 'firebase/entities/quiz';
-import { quizAPI, userAPI } from 'firebase/services/firestore';
+import { Answer, Quiz } from 'firebase/entities/quiz';
+import { userAPI } from 'firebase/services/firestore';
 import { useAuth } from 'contexts/auth';
 import { useRouter } from 'next/navigation';
 
-const QuizForm: FC<{ quiz: Quiz }> = ({ quiz }) => {
+type QuizFormProps = {
+  quiz: Quiz | Answer;
+  isEdit: boolean;
+  editId?: string;
+};
+
+const QuizForm: FC<QuizFormProps> = ({ quiz, isEdit, editId }) => {
   const { user } = useAuth();
   const { push } = useRouter();
   const [saving, setSaving] = useState(false);
 
   const { values, handleChange, handleSubmit } = useFormik({
     initialValues: quiz,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       setSaving(true);
-      const data = await userAPI.saveAnswers(user!.uid, values);
+
+      let data = null;
+
+      if (isEdit) {
+        data = await userAPI.editAnswersById(user!.uid, editId!, values);
+      } else {
+        data = await userAPI.saveAnswers(user!.uid, values);
+      }
+
       if (data.result) {
         toast.success('Ваші відповіді збережено!');
         push('/');
@@ -32,78 +47,47 @@ const QuizForm: FC<{ quiz: Quiz }> = ({ quiz }) => {
   });
   const hash = new Map<number, string>();
   return (
-    <>
-      <form className="py-[50px] mt-[-90px]" onSubmit={handleSubmit}>
-        {values.questions.map((question, index) => {
-          const isInHash = hash.has(question.blockId);
-          if (!isInHash) hash.set(question.blockId, question.blockTitle);
-          return (
-            <Fragment key={index}>
-              {!isInHash && (
-                <h2 className="text-3xl font-bold mt-20 mb-5">
-                  {question.blockId}. {question.blockTitle}
-                </h2>
-              )}
-              <div className="flex flex-col my-5">
-                <label className="text-xl mb-1" htmlFor={`${question.id}`}>
-                  {question.question}
-                </label>
-                <textarea
-                  id={`${question.id}`}
-                  name={`questions[${index}].answer`}
-                  value={question.answer}
-                  onChange={handleChange}
-                  className="flex border border-gray-200 border-l-[5px] rounded-[10px] resize-y outline-none min-h-[50px] px-2 py-1"
-                />
-              </div>
-            </Fragment>
-          );
-        })}
-
-        <div className="mt-10  py-5">
-          <button
-            className="flex items-center justify-center w-[200px] h-[50px] text-app-white rounded-[10px] bg-app-black"
-            type="submit"
-          >
-            {saving ? (
-              <ThreeDots width={20} height={20} color="#fff" />
-            ) : (
-              'Зберегти'
+    <form className="py-[50px] mt-[-90px]" onSubmit={handleSubmit}>
+      {values.questions.map((question, index) => {
+        const isInHash = hash.has(question.blockId);
+        if (!isInHash) hash.set(question.blockId, question.blockTitle);
+        return (
+          <Fragment key={index}>
+            {!isInHash && (
+              <h2 className="text-3xl font-bold mt-20 mb-5">
+                {question.blockId}. {question.blockTitle}
+              </h2>
             )}
-          </button>
-        </div>
-      </form>
-    </>
-  );
-};
+            <div className="flex flex-col my-5">
+              <label className="text-xl mb-1" htmlFor={`${question.id}`}>
+                {question.question}
+              </label>
+              <textarea
+                id={`${question.id}`}
+                name={`questions[${index}].answer`}
+                value={question.answer}
+                onChange={handleChange}
+                className="flex border border-gray-200 border-l-[5px] rounded-[10px] resize-y outline-none min-h-[50px] px-2 py-1"
+              />
+            </div>
+          </Fragment>
+        );
+      })}
 
-const QuizComponent = () => {
-  const [loading, setLoading] = useState(true);
-  const [quiz, setQuiz] = useState<Quiz | null>(null);
-
-  useEffect(() => {
-    quizAPI.getQuiz().then((data) => {
-      if (data) setQuiz(data);
-      setLoading(false);
-    });
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="w-full h-full flex justify-center items-center">
-        <TailSpin height="80" width="80" color="#222" />
+      <div className="mt-10  py-5">
+        <button
+          className="flex items-center justify-center w-[200px] h-[50px] text-app-white rounded-[10px] bg-app-black"
+          type="submit"
+        >
+          {saving ? (
+            <ThreeDots width={20} height={20} color="#fff" />
+          ) : (
+            'Зберегти'
+          )}
+        </button>
       </div>
-    );
-  }
-
-  return quiz ? (
-    <div className="w-full max-w-[1200px] md:w-[80%]">
-      <h1 className="text-5xl md:text-7xl font-bold">{quiz.name}</h1>
-      <QuizForm quiz={quiz} />
-    </div>
-  ) : (
-    <div>Not found</div>
+    </form>
   );
 };
 
-export default memo(QuizComponent);
+export default memo(QuizForm);

@@ -60,7 +60,7 @@ export default function SignupForm() {
           name="name"
           value={values.name}
           onChangeFormik={handleChange}
-          label="Як вас звати?"
+          label="Як Вас звати?"
           required
         />
         <Input
@@ -90,10 +90,10 @@ export default function SignupForm() {
           required
         />
         <Button disabled={loading} className="font-bold">
-          Зареєструватись
+          Зареєструватися
         </Button>
         <span>
-          {'Уже маєте аккаунт?'}{' '}
+          {'Уже маєте акаунт?'}{' '}
           <Link href={'/login'} className="text-app-primary underline ">
             Увійдіть
           </Link>

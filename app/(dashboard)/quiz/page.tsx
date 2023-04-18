@@ -1,9 +1,9 @@
-import QuizComponent from 'components/QuizForm/QuizForm';
+import Quiz from 'components/Quiz/Quiz';
 
 export default function QuizPage() {
   return (
     <div className="flex justify-center h-full">
-      <QuizComponent />
+      <Quiz />
     </div>
   );
 }

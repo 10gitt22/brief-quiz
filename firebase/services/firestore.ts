@@ -1,6 +1,6 @@
 import { FirestoreUser } from '../entities/user';
 import firebaseApp from '../config';
-import { DocumentReference, addDoc, collection, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
+import { DocumentReference, addDoc, collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { Answer, Quiz } from 'firebase/entities/quiz';
 import { FirebaseError } from 'firebase/app';
 
@@ -41,6 +41,47 @@ export const userAPI = {
       })
 
       return {result, error}
+    } catch (e) {
+      if (e instanceof FirebaseError) {
+        error = e.message
+      } else {
+        error = 'Unexpected error'
+      }
+      return {result: null, error}
+    }
+  },
+  async getUserAnswersById(userId: string, answersId: string) {
+    const answersDocRef = doc(db, 'users', userId, 'answers', answersId)
+    let error = null
+    let result = null
+
+    try {
+      const docSnap = await getDoc(answersDocRef)
+      if(docSnap.exists()) {
+        result = docSnap.data() as Answer
+      } else {
+        error = "Ваші відповіді не знайдено:("
+      }
+
+      return {result, error}
+    } catch (e) {
+      if (e instanceof FirebaseError) {
+        error = e.message
+      } else {
+        error = 'Unexpected error'
+      }
+      return {result: null, error}
+    }
+
+  },
+  async editAnswersById(userId: string, answersId: string, data: Answer) {
+    const answersDocRef = doc(db, 'users', userId, 'answers', answersId)
+    let error = null
+    
+    try {
+      const docSnap = await getDoc(answersDocRef)
+      if (docSnap.exists()) await updateDoc(answersDocRef, data)
+      return {result: 'OK', error: null}
     } catch (e) {
       if (e instanceof FirebaseError) {
         error = e.message

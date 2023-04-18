@@ -18,7 +18,6 @@ const Dashboard = () => {
       setLoading(true);
       userAPI.getUserAnswers(firestoreUser.id).then((data) => {
         setUserAnswers(data);
-        console.log(data, 'data');
 
         setLoading(false);
       });

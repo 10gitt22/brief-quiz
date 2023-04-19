@@ -1,6 +1,6 @@
 import { FirestoreUser } from '../entities/user';
 import firebaseApp from '../config';
-import { CollectionReference, DocumentData, DocumentReference, addDoc, collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { CollectionReference, DocumentData, addDoc, collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { Answer, AnswerToUpdate, Quiz } from 'firebase/entities/quiz';
 import { FirebaseError } from 'firebase/app';
 
@@ -13,9 +13,6 @@ const createCollection = <T = DocumentData>(collectionName: string) => {
 const usersCollection = createCollection<FirestoreUser>('users') 
 const quizesCollection = createCollection<Quiz>('quizes')
 const answersCollection = createCollection<Answer>('answers')
-
-
-
 
 export const userAPI = {
   async getUser(id: string) {
@@ -38,7 +35,6 @@ export const userAPI = {
     
     return answers
   },
-
   async saveAnswers(data: Answer) {
     let error = null
     try {
@@ -57,7 +53,6 @@ export const userAPI = {
       return {result: null, error}
     }
   },
-
   async getUserAnswersById(answersId: string) {
     const answerDocRef = doc(answersCollection,answersId)
     
@@ -88,7 +83,7 @@ export const userAPI = {
 
     let error = null
     
-    try {
+    try { 
       const docSnap = await getDoc(answerDocRef)
       if (docSnap.exists()) await updateDoc(answerDocRef, data)
       return {result: "OK", error: null}

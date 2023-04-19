@@ -3,20 +3,40 @@
 import { memo, useEffect, useState } from 'react';
 import { TailSpin } from 'react-loader-spinner';
 
-import { quizAPI } from 'firebase/services/firestore';
+import { quizAPI, userAPI } from 'firebase/services/firestore';
 import { Quiz } from 'firebase/entities/quiz';
 
 import QuizForm from 'components/QuizForm/QuizForm';
+import { useRouter } from 'next/navigation';
+import { useAuth } from 'contexts/auth';
+import { toast } from 'react-hot-toast';
 
 const QuizComponent = () => {
   const [loading, setLoading] = useState(true);
   const [quiz, setQuiz] = useState<Quiz | null>(null);
+  const { firestoreUser } = useAuth();
+  const { push } = useRouter();
 
   useEffect(() => {
-    quizAPI.getQuiz().then((data) => {
-      if (data) setQuiz(data);
+    const init = async () => {
+      if (firestoreUser) {
+        const alreadyAnswered = await userAPI.getUserAnswers(firestoreUser.id);
+        if (alreadyAnswered.length > 0) {
+          toast('Ви вже пройшли опитування', {
+            style: {
+              backgroundColor: '#222',
+              color: '#fff',
+            },
+          });
+          push('/');
+        } else {
+          const quizData = await quizAPI.getQuiz();
+          if (quizData) setQuiz(quizData);
+        }
+      }
       setLoading(false);
-    });
+    };
+    init();
   }, []);
 
   if (loading) {

@@ -13,6 +13,7 @@ export type Answer = {
   userName: string
   answeredAt: Timestamp
   userId: string
+  quizId: string
 }
 export type AnswerToUpdate = Pick<Answer, "questions" | 'answeredAt'>
 

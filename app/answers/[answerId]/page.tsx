@@ -29,9 +29,9 @@ export default function AnswerPage() {
         if (data.result) {
           setUserAnswers(data.result);
         }
-        setLoading(false);
       });
     }
+    setLoading(false);
   }, [firestoreUser, answerId]);
 
   if (loading) {

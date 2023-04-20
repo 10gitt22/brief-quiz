@@ -35,6 +35,13 @@ export const userAPI = {
     
     return answers
   },
+  async checkIfAlreadyAnswered(userId: string, quizId: string) {
+    const q = query(answersCollection, where('userId', '==', userId), where("quizId", '==', quizId))
+    const answersSnap = await getDocs(q)
+
+    const answered = !answersSnap.empty
+    return answered
+  },
   async saveAnswers(data: Answer) {
     let error = null
     try {
@@ -99,8 +106,15 @@ export const userAPI = {
 }
 
 export const quizAPI = {
-  async getQuiz() {
-    const docRef = doc(quizesCollection, 'TwkmZZTxJedotBVapB6j')
+  async getQuizes() {
+    const quizesSnap = await getDocs(quizesCollection)
+    const quizes = quizesSnap.docs.map(quiz => {
+      return quiz.data()
+    })
+    return quizes
+  },
+  async getQuizById(quizId: string) {
+    const docRef = doc(quizesCollection, quizId)
     const quiz = await getDoc(docRef)
     return quiz.data()
   }

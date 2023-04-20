@@ -41,6 +41,7 @@ const QuizForm: FC<QuizFormProps> = ({ quiz, isEdit, editId }) => {
           userName: firestoreUser!.name,
           userId: firestoreUser!.id,
           answeredAt: Timestamp.now(),
+          quizId: quiz.id,
         });
       }
 

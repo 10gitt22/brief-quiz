@@ -15,7 +15,7 @@ import { useAuth } from 'contexts/auth';
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
-  const { push } = useRouter();
+  const { push, back } = useRouter();
 
   useEffect(() => {
     if (user) push('/');
@@ -30,7 +30,13 @@ export default function LoginForm() {
       setLoading(true);
       const response = await logIn(data.email, data.password);
       if (response.result) {
-        push('/');
+        const url = localStorage.getItem('quiz_url');
+        if (url) {
+          localStorage.setItem('redirect_from_auth', 'true');
+          window.location.href = url;
+        } else {
+          push('/');
+        }
       }
       if (response.error) {
         toast.error(response.error);
@@ -68,7 +74,11 @@ export default function LoginForm() {
         </Button>
         <span>
           {'Досі нема акаунту?'}{' '}
-          <Link href={'/signup'} className="text-app-primary underline ">
+          <Link
+            href={'/signup'}
+            prefetch={true}
+            className="text-app-primary underline "
+          >
             Зареєструйтесь
           </Link>
         </span>

@@ -7,6 +7,7 @@ import { TailSpin } from 'react-loader-spinner';
 
 import { Answer } from 'firebase/entities/quiz';
 import { userAPI } from 'firebase/services/firestore';
+import RedirectToQuiz from 'components/RedirectToQuiz/RedirectToQuiz';
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
@@ -14,14 +15,15 @@ const Dashboard = () => {
   const { firestoreUser } = useAuth();
 
   useEffect(() => {
-    if (firestoreUser) {
-      setLoading(true);
-      userAPI.getUserAnswers(firestoreUser.id).then((data) => {
-        setUserAnswers(data);
-
-        setLoading(false);
-      });
-    }
+    localStorage.removeItem('redirect_from_auth');
+    const init = async () => {
+      if (firestoreUser) {
+        const answers = await userAPI.getUserAnswers(firestoreUser.id);
+        setUserAnswers(answers);
+      }
+      setLoading(false);
+    };
+    init();
   }, [firestoreUser]);
 
   if (loading) {
@@ -30,11 +32,9 @@ const Dashboard = () => {
 
   return (
     <div className="flex w-full h-full flex-col gap-4 items-center">
-      {userAnswers.length <= 0 ? (
-        <div className="h-full flex items-center">
-          <Link className="text-2xl font-bold underline" href={'/quiz'}>
-            пройти опитування
-          </Link>
+      {!userAnswers.length ? (
+        <div className="h-full w-full justify-center flex items-center">
+          <RedirectToQuiz />
         </div>
       ) : (
         <div className="w-full h-full flex gap-5">
@@ -43,6 +43,7 @@ const Dashboard = () => {
               <Link
                 key={answer.name}
                 className="h-fit"
+                prefetch={true}
                 href={`/answers/${answer.id}`}
               >
                 <div className="bg-app-black text-app-white p-5 w-[300px] h-[300px] rounded-[10px] shadow-xl text-3xl flex items-end">

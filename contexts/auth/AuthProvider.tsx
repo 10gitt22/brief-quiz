@@ -41,7 +41,10 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
       }
     });
 
-    return () => unsubscribe();
+    return () => {
+      localStorage.clear();
+      return unsubscribe();
+    };
   }, []);
 
   useEffect(() => {

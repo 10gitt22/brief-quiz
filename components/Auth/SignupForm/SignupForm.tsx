@@ -15,7 +15,7 @@ import { useAuth } from 'contexts/auth';
 export default function SignupForm() {
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
-  const { push } = useRouter();
+  const { push, back } = useRouter();
 
   useEffect(() => {
     if (user) push('/');
@@ -37,7 +37,13 @@ export default function SignupForm() {
       };
       const response = await signUp(signupData);
       if (response.result) {
-        push('/');
+        const url = localStorage.getItem('quiz_url');
+        if (url) {
+          window.location.href = url;
+          localStorage.setItem('redirect_from_auth', 'true');
+        } else {
+          push('/');
+        }
       }
       if (response.error) {
         toast.error(response.error);

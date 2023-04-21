@@ -47,6 +47,7 @@ const QuizForm: FC<QuizFormProps> = ({ quiz, isEdit, editId }) => {
 
       if (data.result) {
         toast.success('Ваші відповіді збережено!');
+        localStorage.removeItem('quiz_url');
         push('/');
       }
       if (data.error) {

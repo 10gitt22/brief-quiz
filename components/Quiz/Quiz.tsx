@@ -15,7 +15,7 @@ const getQuizId = (pathname: string) => {
   const path_arr = pathname.split('/');
   return path_arr[path_arr.length - 1];
 };
-//        http://localhost:3000/quiz/TwkmZZTxJedotBVapB6j
+// http://localhost:3000/quiz/TwkmZZTxJedotBVapB6j
 const QuizComponent = () => {
   const { firestoreUser } = useAuth();
   const [quiz, setQuiz] = useState<Quiz | null>(null);
@@ -30,8 +30,8 @@ const QuizComponent = () => {
     if (!isRedirectAfterAuth) {
       localStorage.setItem('quiz_url', location.href);
     } else {
+      console.log('cleaned');
       localStorage.removeItem('redirect_from_auth');
-      localStorage.removeItem('quiz_url');
     }
   }, []);
 
@@ -61,13 +61,13 @@ const QuizComponent = () => {
     init();
   }, [firestoreUser, quizId]);
 
-  // if (loading) {
-  //   return (
-  //     <div className="w-full h-full flex justify-center items-center">
-  //       <TailSpin height="80" width="80" color="#222" />
-  //     </div>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        <TailSpin height="80" width="80" color="#222" />
+      </div>
+    );
+  }
 
   return quiz ? (
     <div className="w-full max-w-[1200px] md:w-[80%]">

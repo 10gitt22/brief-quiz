@@ -5,12 +5,14 @@ import { FC, useCallback, useState } from 'react';
 import { motion } from 'framer-motion';
 import QuizForm from 'components/QuizForm/QuizForm';
 import StaticAnswers from './StaticAnswers';
+import { useAuth } from 'contexts/auth';
 
 type AnswersProps = {
   answers: Answer;
 };
 
 const Answers: FC<AnswersProps> = ({ answers }) => {
+  const { firestoreUser } = useAuth();
   const [isEdit, setIsEdit] = useState(false);
 
   const enableEdit = useCallback(() => {
@@ -20,6 +22,14 @@ const Answers: FC<AnswersProps> = ({ answers }) => {
   const disableEdit = useCallback(() => {
     setIsEdit(false);
   }, []);
+
+  if (firestoreUser?.id !== answers.userId) {
+    return (
+      <div className="w-full h-full">
+        <StaticAnswers answers={answers} />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-full">

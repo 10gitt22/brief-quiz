@@ -18,7 +18,6 @@ export default function AdminQuizesPage() {
 
   const init = async () => {
     const quizesResponse = await quizAPI.getQuizes();
-    console.log(quizesResponse, 'asdaksj');
 
     setQuizes(() => {
       setLoading(false);

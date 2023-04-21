@@ -35,13 +35,13 @@ const RedirectToQuiz = () => {
 
     if (!validHost || !validPath || !validId) {
       toast.error(
-        `Помилка!\nПосилання повинно виглядати у форматі https://${window.location.hostname}/quiz/{quizId} `
+        `Помилка!\nПосилання повинно виглядати у форматі https://${window.location.hostname}/quizes/{quizId} `
       );
       return;
     }
 
     const quizId = url.pathname.split('/')[2];
-    push(`/quiz/${quizId}`);
+    push(`/quizes/${quizId}`);
   };
 
   return (
@@ -51,7 +51,7 @@ const RedirectToQuiz = () => {
         <input
           className="w-full border border-app-black h-[50px] border-l-[5px] rounded-[10px] px-5 outline-none placeholder:text-[#999] font-thin "
           value={link}
-          placeholder="https://brief-quiz.vercel.app/quiz/..."
+          placeholder="https://brief-quiz.vercel.app/quizes/..."
           onChange={handleInput}
         />
         <button

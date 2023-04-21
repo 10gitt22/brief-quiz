@@ -51,7 +51,7 @@ export default function AnswerPage() {
       <main className="h-screen w-full py-[100px] px-5">
         {!userAnswers ? (
           <div className="h-full flex flex-col items-center justify-center">
-            Ваших відповідй не знайдено
+            Ваших відповідей не знайдено
             <Link className="text-2xl font-bold underline" href={'/'}>
               на головну
             </Link>

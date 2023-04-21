@@ -1,6 +1,6 @@
 import { FirestoreUser } from '../entities/user';
 import firebaseApp from '../config';
-import { CollectionReference, DocumentData, addDoc, collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { CollectionReference, DocumentData, addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { Answer, AnswerToUpdate, Quiz } from 'firebase/entities/quiz';
 import { FirebaseError } from 'firebase/app';
 
@@ -113,6 +113,10 @@ export const answersAPI = {
     })
     return answers
   },
+  async deleteAnswer(id: string) {
+    const docRef = doc(answersCollection, id)
+    return await deleteDoc(docRef)
+  }
 }
 
 export const quizAPI = {

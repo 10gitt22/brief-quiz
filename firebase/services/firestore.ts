@@ -105,6 +105,16 @@ export const userAPI = {
   }
 }
 
+export const answersAPI = {
+  async getAnswers() {
+    const answersSnap = await getDocs(answersCollection)
+    const answers = answersSnap.docs.map(answer => {
+      return answer.data()
+    })
+    return answers
+  },
+}
+
 export const quizAPI = {
   async getQuizes() {
     const quizesSnap = await getDocs(quizesCollection)

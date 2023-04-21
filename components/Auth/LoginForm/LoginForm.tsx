@@ -29,6 +29,7 @@ export default function LoginForm() {
     onSubmit: async (data) => {
       setLoading(true);
       const response = await logIn(data.email, data.password);
+
       if (response.result) {
         const url = localStorage.getItem('quiz_url');
         if (url) {
@@ -74,11 +75,7 @@ export default function LoginForm() {
         </Button>
         <span>
           {'Досі нема акаунту?'}{' '}
-          <Link
-            href={'/signup'}
-            prefetch={true}
-            className="text-app-primary underline "
-          >
+          <Link href={'/signup'} className="text-app-primary underline ">
             Зареєструйтесь
           </Link>
         </span>

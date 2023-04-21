@@ -16,14 +16,16 @@ const Dashboard = () => {
 
   useEffect(() => {
     localStorage.removeItem('redirect_from_auth');
+
     const init = async () => {
       if (firestoreUser) {
         const answers = await userAPI.getUserAnswers(firestoreUser.id);
         setUserAnswers(answers);
       }
-      setLoading(false);
     };
     init();
+
+    setLoading(false);
   }, [firestoreUser]);
 
   if (loading) {
@@ -43,7 +45,6 @@ const Dashboard = () => {
               <Link
                 key={answer.name}
                 className="h-fit"
-                prefetch={true}
                 href={`/answers/${answer.id}`}
               >
                 <div className="bg-app-black text-app-white p-5 w-[300px] h-[300px] rounded-[10px] shadow-xl text-3xl flex items-end">

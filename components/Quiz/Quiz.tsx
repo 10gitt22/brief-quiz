@@ -53,10 +53,14 @@ const QuizComponent = () => {
         }
 
         const quizData = await quizAPI.getQuizById(quizId);
-        quizData && setQuiz(quizData);
-      }
+        quizData &&
+          setQuiz(() => {
+            setLoading(false);
+            return quizData;
+          });
 
-      setLoading(false);
+        setLoading(false);
+      }
     };
     init();
   }, [firestoreUser, quizId]);
@@ -75,7 +79,9 @@ const QuizComponent = () => {
       <QuizForm quiz={quiz} isEdit={false} />
     </div>
   ) : (
-    <div>{'Опитування не знайдено:('}</div>
+    <div className="h-full flex items-center text-2xl">
+      {'Опитування не знайдено:( 🤷‍♂️'}
+    </div>
   );
 };
 

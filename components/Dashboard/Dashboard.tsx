@@ -20,12 +20,13 @@ const Dashboard = () => {
     const init = async () => {
       if (firestoreUser) {
         const answers = await userAPI.getUserAnswers(firestoreUser.id);
-        setUserAnswers(answers);
+        setUserAnswers(() => {
+          setLoading(false);
+          return answers;
+        });
       }
     };
     init();
-
-    setLoading(false);
   }, [firestoreUser]);
 
   if (loading) {

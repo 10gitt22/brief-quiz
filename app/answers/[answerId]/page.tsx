@@ -27,11 +27,15 @@ export default function AnswerPage() {
       setLoading(true);
       userAPI.getUserAnswersById(answerId).then((data) => {
         if (data.result) {
-          setUserAnswers(data.result);
+          setUserAnswers(() => {
+            setLoading(false);
+            return data.result;
+          });
+        } else {
+          setLoading(false);
         }
       });
     }
-    setLoading(false);
   }, [firestoreUser, answerId]);
 
   if (loading) {

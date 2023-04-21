@@ -131,5 +131,20 @@ export const quizAPI = {
     const docRef = doc(quizesCollection, quizId)
     const quiz = await getDoc(docRef)
     return quiz.data()
+  },
+  async createQuiz() {
+    const createdDoc = await addDoc(quizesCollection, {
+      id: '',
+      name: '',
+      questions: []
+    })
+    await updateDoc(createdDoc, {
+      id: createdDoc.id
+    })
+    return createdDoc.id
+  },
+  async deleteQuiz(id: string) {
+    const docRef = doc(quizesCollection, id)
+    return await deleteDoc(docRef)
   }
 }

@@ -42,7 +42,6 @@ export default function AdminQuizesPage() {
       success: <b>{`Опитування з id: ${quiz.id} видалено успішно!`}</b>,
       error: <b>Помилка❌</b>,
     });
-    console.log('qq');
 
     await init();
   };
@@ -96,7 +95,6 @@ export default function AdminQuizesPage() {
                       </Link>
                       <button
                         className="bg-red-100 disabled:bg-red-50 transition-colors hover:bg-red-200 px-4 py-1 rounded-r-[10px]"
-                        data-id={quiz.id}
                         disabled={quiz.id === 'TwkmZZTxJedotBVapB6j'}
                         onClick={() => deleteQuiz(quiz)}
                       >

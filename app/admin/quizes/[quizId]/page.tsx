@@ -24,6 +24,8 @@ export default function EditQuizPage() {
   useEffect(() => {
     const init = async () => {
       const quizResp = await quizAPI.getQuizById(quizId);
+      console.log(quizResp);
+
       if (quizResp) {
         setQuiz(() => {
           setLoading(false);

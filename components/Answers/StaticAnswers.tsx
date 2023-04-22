@@ -24,7 +24,7 @@ const StaticAnswers: FC<StaticAnswersProps> = ({ answers }) => {
           <Fragment key={index}>
             {!isInHash && (
               <h2 className="text-3xl font-bold mt-20 mb-5">
-                {question.blockId}. {question.blockTitle}
+                {question.blockTitle}
               </h2>
             )}
             <div className="flex flex-col my-5">

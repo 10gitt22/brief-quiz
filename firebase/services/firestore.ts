@@ -1,7 +1,7 @@
 import { FirestoreUser } from '../entities/user';
 import firebaseApp from '../config';
 import { CollectionReference, DocumentData, addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
-import { Answer, AnswerToUpdate, Quiz } from 'firebase/entities/quiz';
+import { Answer, AnswerToUpdate, Quiz, QuizToUpdate } from 'firebase/entities/quiz';
 import { FirebaseError } from 'firebase/app';
 
 const db = getFirestore(firebaseApp);
@@ -142,6 +142,23 @@ export const quizAPI = {
       id: createdDoc.id
     })
     return createdDoc.id
+  },
+  async editQuiz(id: string, data: QuizToUpdate) {
+    const quizDocRef = doc(quizesCollection, id)
+    let error = null
+
+    try {
+      const docSnap = await getDoc(quizDocRef) 
+      if (docSnap.exists()) await updateDoc(quizDocRef, data)
+      return {result: "OK", error: null}
+    } catch (e) {
+      if (e instanceof FirebaseError) {
+        error = e.message
+      } else {
+        error = 'Unexpected error'
+      }
+      return {result: null, error}
+    } 
   },
   async deleteQuiz(id: string) {
     const docRef = doc(quizesCollection, id)

@@ -6,6 +6,8 @@ export type Quiz = {
   questions: Question[]
 }
 
+export type QuizToUpdate = Pick<Quiz, "name" | 'questions'>
+
 export type Answer = {
   readonly id: string
   name: string

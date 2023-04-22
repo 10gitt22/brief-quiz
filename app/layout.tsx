@@ -27,6 +27,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="shortcut icon" href="/logo.svg" />
+        <title>brief-quiz</title>
+      </head>
       <body
         className={`${Helvetica.className} bg-app-white h-screen overflow-y-scroll`}
       >
